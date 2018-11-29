@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" media="screen" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/moment.js"></script>
     <script src="assets/js/script.js"></script>
 </head>
 <body>
@@ -18,7 +20,21 @@
         </div>
         <div id="schedule" class="card mb-4">
             <div class="card-header bg-info font-weight-bold text-white"><i class="fa fa-train mr-3"></i>Train Schedule</div>
-            <div class="card-body"></div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="text-center" scope="col">Train #</th>
+                            <th class="text-center" scope="col">Name</th>
+                            <th class="text-center" scope="col">Destination</th>
+                            <th class="text-center" scope="col">Starting Time</th>
+                            <th class="text-center" scope="col">Frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleArea">
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div id="newForm" class="card mb-4">
             <div class="card-header bg-info font-weight-bold text-white"><i class="fa fa-search mr-3"></i>Add Train to Schedule</div>
@@ -32,7 +48,7 @@
                     <input type="text" class="form-control" id="destination" aria-describedby="destination" placeholder="" />
                 </div>
                 <div class="form-group">
-                    <label for="firstTime">First Train Time:</label>
+                    <label for="firstTime">Starting Time:</label>
                     <input type="text" class="form-control" id="firstTime" aria-describedby="firstTime" placeholder="" />
                     <small id="firstTimeHelp" class="form-text text-muted">Please enter it in military format (HH:mm)</small>
                 </div>
