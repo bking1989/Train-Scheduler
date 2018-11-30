@@ -24,11 +24,11 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th class="text-center" scope="col">Train #</th>
                             <th class="text-center" scope="col">Name</th>
                             <th class="text-center" scope="col">Destination</th>
-                            <th class="text-center" scope="col">Starting Time</th>
-                            <th class="text-center" scope="col">Frequency</th>
+                            <th class="text-center" scope="col">Frequency (min)</th>
+                            <th class="text-center" scope="col">Next Arrival</th>
+                            <th class="text-center" scope="col">ETA</th>
                         </tr>
                     </thead>
                     <tbody id="scheduleArea">
@@ -48,14 +48,14 @@
                     <input type="text" class="form-control" id="destination" aria-describedby="destination" placeholder="" />
                 </div>
                 <div class="form-group">
-                    <label for="firstTime">Starting Time:</label>
-                    <input type="text" class="form-control" id="firstTime" aria-describedby="firstTime" placeholder="" />
-                    <small id="firstTimeHelp" class="form-text text-muted">Please enter it in military format (HH:mm)</small>
-                </div>
-                <div class="form-group">
                     <label for="frequency">Frequency:</label>
                     <input type="text" class="form-control" id="frequency" aria-describedby="frequency" placeholder="" />
                     <small id="frequencyHelp" class="form-text text-muted">Please enter it in minutes format</small>
+                </div>
+                <div class="form-group">
+                    <label for="firstTime">Starting Time:</label>
+                    <input type="time" min="00:00:00" max="23:59:00" class="form-control" id="firstTime" aria-describedby="firstTime" placeholder="" />
+                    <small id="firstTimeHelp" class="form-text text-muted">Please enter it in military format (HH:mm)</small>
                 </div>
                 <button id="formBtn" type="submit" class="btn btn-info"><i class="fa fa-plus mr-3"></i>Add New Train</button>
             </div>

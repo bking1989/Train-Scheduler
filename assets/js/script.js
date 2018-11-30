@@ -12,32 +12,30 @@ $(document).ready(function() {
         // Clear out the schedule's body
         $("#scheduleArea").empty();
 
-        // Define a train counter
-        let trainCount = 1;
-
         // Run a loop to build the new schedule
         trainList.forEach(function(train) {
             const newRow = $("<tr>");
-            const numberCol = $("<th class='text-center' scope='row'>")
             const nameCol = $("<td class='text-center'>");
             const destCol = $("<td class='text-center'>");
-            const timeCol = $("<td class='text-center'>");
             const freqCol = $("<td class='text-center'>");
+            const nextCol = $("<td class='text-center'>");
+            const etaCol = $("<td class='text-center'>");
 
-            $(numberCol).append(trainCount);
+            const now = moment();
+            const startTime = moment(train.startingTime, moment.HTML5_FMT.TIME);
+
             $(nameCol).append(train.name);
             $(destCol).append(train.destination);
-            $(timeCol).append(train.startingTime);
             $(freqCol).append(train.frequency);
+            $(nextCol).append("");
+            $(etaCol).append("");
 
-            $(newRow).append(numberCol);
             $(newRow).append(nameCol);
             $(newRow).append(destCol);
-            $(newRow).append(timeCol);
             $(newRow).append(freqCol);
+            $(newRow).append(nextCol);
+            $(newRow).append(etaCol);
             $("#scheduleArea").append(newRow);
-
-            trainCount++;
         });
     };
 
@@ -46,15 +44,15 @@ $(document).ready(function() {
         // Retrieve form data and define it
         const trainName = $("#trainName").val();
         const destination = $("#destination").val();
-        const firstTime = $("#firstTime").val();
         const frequency = $("#frequency").val();
+        const firstTime = $("#firstTime").val();
 
         // Create a new object for the train's information
         const trainObj = {
             name : trainName,
             destination : destination,
-            startingTime : firstTime,
-            frequency : frequency
+            frequency : frequency,
+            startingTime : firstTime
         };
 
         // Push this new object into an array, for storage
@@ -66,8 +64,8 @@ $(document).ready(function() {
         // Clear the form's input boxes
         $("#trainName").val("");
         $("#destination").val("");
-        $("#firstTime").val("");
         $("#frequency").val("");
+        $("#firstTime").val("");
 
         // Finish the sequence by turning our list back into a string
         localStorage.setItem("trainList", JSON.stringify(trainList));
