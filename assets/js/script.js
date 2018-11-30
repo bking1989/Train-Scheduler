@@ -21,13 +21,20 @@ $(document).ready(function() {
             const nextCol = $("<td class='text-center'>");
             const etaCol = $("<td class='text-center'>");
 
-            const now = moment();
-            const startTime = moment(train.startingTime, moment.HTML5_FMT.TIME);
+            const currentTime = moment();
+            const startTime = moment(train.startingTime, moment.ISO_8601);
+
+            while (startTime.isBefore(currentTime)) {
+                var updatedTime = moment(startTime, "HH:mm").add(train.frequency, 'm');
+                return updatedTime;
+            }
+
+            const nextTime = moment(updatedTime, "HH:mm").add(train.frequency, 'm');
 
             $(nameCol).append(train.name);
             $(destCol).append(train.destination);
             $(freqCol).append(train.frequency);
-            $(nextCol).append("");
+            $(nextCol).append(nextTime);
             $(etaCol).append("");
 
             $(newRow).append(nameCol);
@@ -43,9 +50,9 @@ $(document).ready(function() {
     const newTrain = () => {
         // Retrieve form data and define it
         const trainName = $("#trainName").val();
-        const destination = $("#destination").val();
+        const destination = $("#destination").val().trim();
         const frequency = $("#frequency").val();
-        const firstTime = $("#firstTime").val();
+        const firstTime = $("#firstTime").format("HH:mm");
 
         // Create a new object for the train's information
         const trainObj = {
