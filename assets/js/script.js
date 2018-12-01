@@ -22,13 +22,26 @@ $(document).ready(function() {
             const etaCol = $("<td class='text-center'>");
 
             const currentTime = moment();
-            const startingTime = moment(train.startingTime, "YYYY-MM-DD HH:mm Z");
+            const currentDate = moment().format("YYYY-MM-DD");
+            var nextTime;
+
+            // Calculate the next arrival time
+            if (moment().isAfter(`${currentDate} ${train.startingTime}`, "YYYY-MM-DD HH:mm")) {
+                var nextTime = moment(`${currentDate} ${train.startingTime}`, "YYYY-MM-DD HH:mm").add(train.frequency, "minutes");
+                return nextTime;
+            } else {
+                var nextTime = moment(`${currentDate} ${train.startingTime}`, "YYYY-MM-DD HH:mm").add(train.frequency, "minutes");
+                var nextTimeFormat = moment(`${currentDate} ${train.startingTime}`, "YYYY-MM-DD HH:mm").add(train.frequency, "minutes").format("h:mm A");
+            };
+
+            // Calculate the estimated time of arrival
+            const etaTime = moment(nextTime).fromNow();
 
             $(nameCol).append(train.name);
             $(destCol).append(train.destination);
             $(freqCol).append(train.frequency);
-            $(nextCol).append(startingTime.isValid().toString());
-            $(etaCol).append("");
+            $(nextCol).append(nextTimeFormat.toString());
+            $(etaCol).append(etaTime.toString());
 
             $(newRow).append(nameCol);
             $(newRow).append(destCol);
@@ -47,28 +60,40 @@ $(document).ready(function() {
         const frequency = $("#frequency").val();
         const startingTime = $("#firstTime").val();
 
-        // Create a new object for the train's information
-        const trainObj = {
-            name : trainName,
-            destination : destination,
-            frequency : frequency,
-            startingTime : startingTime
+        // Regular Expression for time format
+        const timeCheck = "^([0-1][0-9]|[2][0-3]):([0-5][0-9])$";
+
+        
+        if (trainName == "" || destination == "" || frequency == "" || startingTime == "") {
+            alert("You did not provide the correct information. Please review the form, and try again.");
+            return false;
+        } else if (startingTime != "" && !startingTime.match(timeCheck)) {
+            alert("The time you entered is not the correct format. Please review the form, and try again.");
+            return false;
+        } else {
+            // Create a new object for the train's information
+            const trainObj = {
+                name : trainName,
+                destination : destination,
+                frequency : frequency,
+                startingTime : startingTime
+            };
+
+            // Push this new object into an array, for storage
+            trainList.push(trainObj);
+
+            // Re-render the train schedule
+            scheduleRender();
+
+            // Clear the form's input boxes
+            $("#trainName").val("");
+            $("#destination").val("");
+            $("#frequency").val("");
+            $("#firstTime").val("");
+
+            // Finish the sequence by turning our list back into a string
+            localStorage.setItem("trainList", JSON.stringify(trainList));
         };
-
-        // Push this new object into an array, for storage
-        trainList.push(trainObj);
-
-        // Re-render the train schedule
-        scheduleRender();
-
-        // Clear the form's input boxes
-        $("#trainName").val("");
-        $("#destination").val("");
-        $("#frequency").val("");
-        $("#firstTime").val("");
-
-        // Finish the sequence by turning our list back into a string
-        localStorage.setItem("trainList", JSON.stringify(trainList));
     };
 
     // Listener for the form's submit button
