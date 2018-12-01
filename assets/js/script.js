@@ -20,18 +20,17 @@ $(document).ready(function() {
             const freqCol = $("<td class='text-center'>");
             const nextCol = $("<td class='text-center'>");
             const etaCol = $("<td class='text-center'>");
-
-            const currentTime = moment();
+            
             const currentDate = moment().format("YYYY-MM-DD");
-            var nextTime;
 
-            // Calculate the next arrival time
-            if (moment().isAfter(`${currentDate} ${train.startingTime}`, "YYYY-MM-DD HH:mm")) {
-                var nextTime = moment(`${currentDate} ${train.startingTime}`, "YYYY-MM-DD HH:mm").add(train.frequency, "minutes");
+            while (moment().isAfter(`"${currentDate} ${train.startingTime}:00", "YYYY-MM-DD HH:mm:ss"`)) {
+                var nextTime = moment(`"${currentDate} ${train.startingTime}:00", "YYYY-MM-DD HH:mm:ss"`).add(train.frequency, "minutes");
                 return nextTime;
-            } else {
-                var nextTime = moment(`${currentDate} ${train.startingTime}`, "YYYY-MM-DD HH:mm").add(train.frequency, "minutes");
-                var nextTimeFormat = moment(`${currentDate} ${train.startingTime}`, "YYYY-MM-DD HH:mm").add(train.frequency, "minutes").format("h:mm A");
+            };
+
+            if (moment().isBefore(`"${currentDate} ${train.startingTime}:00", "YYYY-MM-DD HH:mm:ss"`)) {
+                var nextTime = moment(`"${currentDate} ${train.startingTime}:00", "YYYY-MM-DD HH:mm:ss"`);
+                return nextTime;
             };
 
             // Calculate the estimated time of arrival
@@ -40,8 +39,8 @@ $(document).ready(function() {
             $(nameCol).append(train.name);
             $(destCol).append(train.destination);
             $(freqCol).append(train.frequency);
-            $(nextCol).append(nextTimeFormat.toString());
-            $(etaCol).append(etaTime.toString());
+            $(nextCol).append(nextTime);
+            $(etaCol).append(etaTime);
 
             $(newRow).append(nameCol);
             $(newRow).append(destCol);
