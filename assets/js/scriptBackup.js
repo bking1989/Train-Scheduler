@@ -20,34 +20,27 @@ $(document).ready(function() {
             const freqCol = $("<td class='text-center'>");
             const nextCol = $("<td class='text-center'>");
             const etaCol = $("<td class='text-center'>");
-
-            // Variables using the Moment.js plug-in
-            const currentDate = moment().format("YYYY-MM-DD");
-            const startingTime = moment(`${currentDate} ${train.startingTime}`);
-            var nextTime = moment(startingTime);
             
-            if (moment().isAfter(startingTime)) {
-                var nextTime = moment(startingTime).add(train.frequency, "minutes");
+            const currentDate = moment().format("YYYY-MM-DD");
+
+            while (moment().isAfter(`"${currentDate} ${train.startingTime}:00", "YYYY-MM-DD HH:mm:ss"`)) {
+                var nextTime = moment(`"${currentDate} ${train.startingTime}:00", "YYYY-MM-DD HH:mm:ss"`).add(train.frequency, "minutes");
+                return nextTime;
             };
 
-            // This while loop was meant to update nextTime *until it became a future time*
-            // while (moment().isAfter(nextTime)) {
-            //     var nextTime = moment(startingTime).add(train.frequency, "minutes");
+            if (moment().isBefore(`"${currentDate} ${train.startingTime}:00", "YYYY-MM-DD HH:mm:ss"`)) {
+                var nextTime = moment(`"${currentDate} ${train.startingTime}:00", "YYYY-MM-DD HH:mm:ss"`);
+                return nextTime;
+            };
 
-            //     if (moment().isBefore(nextTime)) {
-            //         break;
-            //     };
-            // };
-
-            // Estimated time of arrival
+            // Calculate the estimated time of arrival
             const etaTime = moment(nextTime).fromNow();
 
-            // Append all the information to the new row
             $(nameCol).append(train.name);
             $(destCol).append(train.destination);
             $(freqCol).append(train.frequency);
-            $(nextCol).append(nextTime.format("h:mm A").toString());
-            $(etaCol).append(etaTime.toString());
+            $(nextCol).append(nextTime);
+            $(etaCol).append(etaTime);
 
             $(newRow).append(nameCol);
             $(newRow).append(destCol);
