@@ -31,18 +31,18 @@ $(document).ready(function() {
             };
 
             // This while loop was meant to update nextTime *until it became a future time*
-            // while (moment().isAfter(nextTime)) {
-            //     var nextTime = moment(startingTime).add(train.frequency, "minutes");
+            while (moment().isAfter(nextTime)) {
+                nextTime.add(train.frequency, "minutes");
 
-            //     if (moment().isBefore(nextTime)) {
-            //         break;
-            //     };
-            // };
+                if (moment().isBefore(nextTime)) {
+                    break;
+                };
+            };
 
             // Estimated time of arrival
             const etaTime = moment(nextTime).fromNow();
 
-            // Append all the information to the new row
+            // Append all the information to their columns, and then the new row
             $(nameCol).append(train.name);
             $(destCol).append(train.destination);
             $(freqCol).append(train.frequency);
@@ -58,6 +58,11 @@ $(document).ready(function() {
         });
     };
 
+    // Define refresh timer
+    setInterval(function () {
+        scheduleRender();
+    }, 60000);
+
     // New train function
     const newTrain = () => {
         // Retrieve form data and define it
@@ -69,7 +74,7 @@ $(document).ready(function() {
         // Regular Expression for time format
         const timeCheck = "^([0-1][0-9]|[2][0-3]):([0-5][0-9])$";
 
-        
+        // Conditional to make sure fields aren't empty, or in the wrong format
         if (trainName == "" || destination == "" || frequency == "" || startingTime == "") {
             alert("You did not provide the correct information. Please review the form, and try again.");
             return false;
